@@ -7,7 +7,8 @@ int main()
 {
 	//declaring a type called gamewindow for SFML's render window 
 	sf::RenderWindow gamewindow;
-	gamewindow.create(sf::VideoMode(800, 600), "Button Masher");
+	gamewindow.create(sf::VideoMode::getDesktopMode(), "Button Masher",
+		sf::Style::Titlebar | sf::Style::Close);
 
 	while (gamewindow.isOpen()) //Game Loop
 	{

@@ -7,10 +7,23 @@ int main()
 {
 	//declaring a type called gamewindow for SFML's render window 
 	sf::RenderWindow gamewindow;
+	gamewindow.create(sf::VideoMode(800, 600), "Button Masher");
 
-	while (true) //Game Loop
+	while (gamewindow.isOpen()) //Game Loop
 	{
-		//TODO: Check for input
+		//Check for input
+		sf::Event gameEvent;
+
+		while (gamewindow.pollEvent(gameEvent))
+		{
+			//TODO: Process Events
+			//check if the event is the closed event
+			if (gameEvent.type == sf::Event::Closed)
+			{
+				//close the game window
+				gamewindow.close();
+			}
+		}
 
 		//TODO: Update game state
 

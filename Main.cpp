@@ -1,6 +1,7 @@
 //Included Libraries
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <string>
 
 //start of program functions
 int main() 
@@ -47,11 +48,20 @@ int main()
 	titleText.setPosition(gamewindow.getSize().x / 2 - titleText.getLocalBounds().width / 2, 30);
 
 
-	// Create Title
+	// Create Author Text
 	sf::Text authorText;
 	authorText.setFont(gameFont);
 	authorText.setString("By Connor Gallagher");
 	authorText.setPosition(gamewindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, gamewindow.getSize().y / 2 - authorText.getLocalBounds().height + 100);
+
+	int score = 0;
+
+	//Score Text
+	sf::Text scoreText;
+	scoreText.setFont(gameFont);
+	scoreText.setString("Score: " + std::to_string(score));
+	scoreText.setPosition(30, 30);
+
 
 	//--------------------------
 	//Game Loop
@@ -75,7 +85,9 @@ int main()
 			}
 		} 
 
-		//TODO: Update game state
+		// Update game state
+		score = score + 1;
+		scoreText.setString("Score: " + std::to_string(score));
 
 		//--------------------------
 		//Draw Graphics
@@ -88,6 +100,7 @@ int main()
 		gamewindow.draw(buttonSprite);
 		gamewindow.draw(titleText);
 		gamewindow.draw(authorText);
+		gamewindow.draw(scoreText);
 
 		//Display window contents on screen
 		gamewindow.display();

@@ -22,17 +22,37 @@ int main()
 	sf::Sprite buttonSprite;
 	buttonSprite.setTexture(buttonTexture);
 
-	//Create Music
-	sf::Music gameMusic;
-	gameMusic.openFromFile("audio/music.ogg");
-	gameMusic.play();
-
 	// Center the sprite on the screen
 	buttonSprite.setPosition(
 		gamewindow.getSize().x / 2 - buttonTexture.getSize().x / 2,
 		gamewindow.getSize().y / 2 - buttonTexture.getSize().y / 2
 	);
+
+	//Create Music
+	sf::Music gameMusic;
+	gameMusic.openFromFile("audio/music.ogg");
+	gameMusic.play();
 	
+	// Create Font 
+	sf::Font gameFont;
+	gameFont.loadFromFile("fonts/mainFont.ttf");
+
+	// Create Title
+	sf::Text titleText;
+	titleText.setFont(gameFont);
+	titleText.setString("Button Masher!");
+	titleText.setCharacterSize(100);
+	titleText.setFillColor(sf::Color (255, 165, 0));
+	titleText.setStyle(sf::Text::Bold | sf::Text::Italic);
+	titleText.setPosition(gamewindow.getSize().x / 2 - titleText.getLocalBounds().width / 2, 30);
+
+
+	// Create Title
+	sf::Text authorText;
+	authorText.setFont(gameFont);
+	authorText.setString("By Connor Gallagher");
+	authorText.setPosition(gamewindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, gamewindow.getSize().y / 2 - authorText.getLocalBounds().height + 100);
+
 	//--------------------------
 	//Game Loop
 	//--------------------------
@@ -66,6 +86,8 @@ int main()
 
 		//Draw everything 
 		gamewindow.draw(buttonSprite);
+		gamewindow.draw(titleText);
+		gamewindow.draw(authorText);
 
 		//Display window contents on screen
 		gamewindow.display();

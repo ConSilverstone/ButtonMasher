@@ -75,6 +75,14 @@ int main()
 	sf::Time timeRemaining = timeLimit;
 	sf::Clock gameClock;
 
+	//Click sound effect
+	sf::SoundBuffer clickBuffer;
+	clickBuffer.loadFromFile("audio/buttonclick.ogg");
+	sf::Sound clickSound;
+	clickSound.setBuffer(clickBuffer);
+
+	//Game State//
+	bool playing = false;
 
 	//--------------------------
 	//Game Loop
@@ -96,7 +104,20 @@ int main()
 				if (buttonSprite.getGlobalBounds().contains(gameEvent.mouseButton.x, gameEvent.mouseButton.y))
 				{
 					//We clicked the button!!!!
-					score = score + 1;
+					
+					if (playing == true) 
+					{
+						//Yes - increase score!
+						score = score + 1;
+					}
+					else
+					{
+						//No - start playing now!
+						playing = true;
+					}
+
+					//Play the click sound
+					clickSound.play();
 				}
 			}
 
@@ -111,10 +132,21 @@ int main()
 
 		// Update game state
 		sf::Time frameTime = gameClock.restart();
-		timeRemaining = timeRemaining - frameTime;
-		timerText.setString("Time Remaining: " + std::to_string((int)timeRemaining.asSeconds()));
 
+		if (playing == true)
+		{
+			timeRemaining = timeRemaining - frameTime;
+			
+			if (timeRemaining.asSeconds() <= 0.0f)
+			{
+				timeRemaining = sf::seconds(0.0f);
+				playing = false;
+			}
+		}
+
+		timerText.setString("Time Remaining: " + std::to_string((int)timeRemaining.asSeconds()));
 		scoreText.setString("Score: " + std::to_string(score));
+
 		//--------------------------
 		//Draw Graphics
 		//--------------------------

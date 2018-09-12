@@ -10,35 +10,35 @@ int main()
 	//Game Setup
 	//--------------------------
 
-	//declaring a type called gamewindow for SFML's render window 
+	//declaring a type called gamewindow for SFML's render window//
 	sf::RenderWindow gamewindow;
 	gamewindow.create(sf::VideoMode::getDesktopMode(), "Button Masher",
 		sf::Style::Titlebar | sf::Style::Close);
 	
 
-	//Create Button Sprite
+	//Create Button Sprite//
 	sf::Texture buttonTexture;
 	buttonTexture.loadFromFile("graphics/button.png");
 
 	sf::Sprite buttonSprite;
 	buttonSprite.setTexture(buttonTexture);
 
-	// Center the sprite on the screen
+	//Center the sprite on the screen//
 	buttonSprite.setPosition(
 		gamewindow.getSize().x / 2 - buttonTexture.getSize().x / 2,
 		gamewindow.getSize().y / 2 - buttonTexture.getSize().y / 2
 	);
 
-	//Create Music
+	//Create Music//
 	sf::Music gameMusic;
 	gameMusic.openFromFile("audio/music.ogg");
 	gameMusic.play();
 	
-	// Create Font 
+	//Create Font//
 	sf::Font gameFont;
 	gameFont.loadFromFile("fonts/mainFont.ttf");
 
-	// Create Title
+	//Create Title//
 	sf::Text titleText;
 	titleText.setFont(gameFont);
 	titleText.setString("Button Masher!");
@@ -48,7 +48,7 @@ int main()
 	titleText.setPosition(gamewindow.getSize().x / 2 - titleText.getLocalBounds().width / 2, 30);
 
 
-	// Create Author Text
+	//Create Author Text//
 	sf::Text authorText;
 	authorText.setFont(gameFont);
 	authorText.setString("By Connor Gallagher");
@@ -56,11 +56,24 @@ int main()
 
 	int score = 0;
 
-	//Score Text
+	//Score Text//
 	sf::Text scoreText;
 	scoreText.setFont(gameFont);
 	scoreText.setString("Score: " + std::to_string(score));
 	scoreText.setPosition(30, 30);
+
+	//Timer Text//
+	sf::Text timerText;
+	timerText.setFont(gameFont);
+	timerText.setString("Time Remaining: 0");
+	timerText.setCharacterSize(16);
+	timerText.setFillColor(sf::Color::White);
+	timerText.setPosition(gamewindow.getSize().x - timerText.getLocalBounds().width - 30, 30);
+
+	//Timer Functionality//
+	sf::Time timeLimit = sf::seconds(10.0f); //Time is a float
+	sf::Time timeRemaining = timeLimit;
+	sf::Clock gameClock;
 
 
 	//--------------------------
@@ -76,6 +89,17 @@ int main()
 		while (gamewindow.pollEvent(gameEvent))
 		{
 			// Process Events
+			
+			//check if the event is a mouse button pressed event
+			if (gameEvent.type == sf::Event::MouseButtonPressed)
+			{
+				if (buttonSprite.getGlobalBounds().contains(gameEvent.mouseButton.x, gameEvent.mouseButton.y))
+				{
+					//We clicked the button!!!!
+					score = score + 1;
+				}
+			}
+
 
 			//check if the event is the closed event
 			if (gameEvent.type == sf::Event::Closed)
@@ -86,9 +110,11 @@ int main()
 		} 
 
 		// Update game state
-		score = score + 1;
-		scoreText.setString("Score: " + std::to_string(score));
+		sf::Time frameTime = gameClock.restart();
+		timeRemaining = timeRemaining - frameTime;
+		timerText.setString("Time Remaining: " + std::to_string((int)timeRemaining.asSeconds()));
 
+		scoreText.setString("Score: " + std::to_string(score));
 		//--------------------------
 		//Draw Graphics
 		//--------------------------
@@ -101,6 +127,7 @@ int main()
 		gamewindow.draw(titleText);
 		gamewindow.draw(authorText);
 		gamewindow.draw(scoreText);
+		gamewindow.draw(timerText);
 
 		//Display window contents on screen
 		gamewindow.display();

@@ -54,6 +54,15 @@ int main()
 	authorText.setString("By Connor Gallagher");
 	authorText.setPosition(gamewindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, gamewindow.getSize().y / 2 - authorText.getLocalBounds().height + 100);
 
+	//Prompt Text
+	sf::Text promptText;
+	promptText.setFont(gameFont);
+	promptText.setString("Click the button to start the game!");
+	promptText.setCharacterSize(16);
+	titleText.setFillColor(sf::Color(255, 165, 0));
+	promptText.setPosition(gamewindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, 200);
+
+
 	int score = 0;
 
 	//Score Text//
@@ -114,6 +123,12 @@ int main()
 					{
 						//No - start playing now!
 						playing = true;
+
+						//Reset the game data
+						score = 0;
+						timeRemaining = timeLimit;
+
+						promptText.setString("Click the button as fast as you can!!!!");
 					}
 
 					//Play the click sound
@@ -141,6 +156,7 @@ int main()
 			{
 				timeRemaining = sf::seconds(0.0f);
 				playing = false;
+				promptText.setString("Your final score was " + std::to_string(score) + "!\nClick the button to start a new game!");
 			}
 		}
 
@@ -160,6 +176,7 @@ int main()
 		gamewindow.draw(authorText);
 		gamewindow.draw(scoreText);
 		gamewindow.draw(timerText);
+		gamewindow.draw(promptText);
 
 		//Display window contents on screen
 		gamewindow.display();

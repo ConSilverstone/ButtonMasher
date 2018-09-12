@@ -47,7 +47,6 @@ int main()
 	titleText.setStyle(sf::Text::Bold | sf::Text::Italic);
 	titleText.setPosition(gamewindow.getSize().x / 2 - titleText.getLocalBounds().width / 2, 30);
 
-
 	//Create Author Text//
 	sf::Text authorText;
 	authorText.setFont(gameFont);
@@ -90,6 +89,12 @@ int main()
 	sf::Sound clickSound;
 	clickSound.setBuffer(clickBuffer);
 
+	//Gameover sound effect
+	sf::SoundBuffer gameoverBuffer;
+	gameoverBuffer.loadFromFile("audio/gameover.ogg");
+	sf::Sound gameoverSound;
+	gameoverSound.setBuffer(gameoverBuffer);
+
 	//Game State//
 	bool playing = false;
 
@@ -130,7 +135,7 @@ int main()
 
 						promptText.setString("Click the button as fast as you can!!!!");
 					}
-
+					
 					//Play the click sound
 					clickSound.play();
 				}
@@ -156,6 +161,7 @@ int main()
 			{
 				timeRemaining = sf::seconds(0.0f);
 				playing = false;
+				gameoverSound.play();
 				promptText.setString("Your final score was " + std::to_string(score) + "!\nClick the button to start a new game!");
 			}
 		}
